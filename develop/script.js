@@ -1,9 +1,11 @@
+const apiKey = "77ecc596aad7e05b66bbdb9e1350922f";
+
 $(document).ready(function() {
   $("#search-button").on("click", function() {
     var searchValue = $("#search-value").val();
 
     // clear input box
-
+    $("#search-value").val("");
     searchWeather(searchValue);
   });
 
@@ -18,11 +20,13 @@ $(document).ready(function() {
 
   function searchWeather(searchValue) {
     $.ajax({
-      type: "",
-      url: "" + searchValue + "",
+      type: "GET",
+      url: "http://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
+        console.log(data);
         // create history link for this search
+        localStorage.getItem("history");
         if (history.indexOf(searchValue) === -1) {
           history.push(searchValue);
           window.localStorage.setItem("history", JSON.stringify(history));
