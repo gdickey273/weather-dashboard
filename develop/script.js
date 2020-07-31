@@ -1,4 +1,5 @@
 const apiKey = "77ecc596aad7e05b66bbdb9e1350922f";
+var weatherObj;
 
 $(document).ready(function() {
   $("#search-button").on("click", function() {
@@ -19,11 +20,13 @@ $(document).ready(function() {
   }
 
   function searchWeather(searchValue) {
+    
     $.ajax({
       type: "GET",
       url: "http://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
+        weatherObj = data;
         console.log(data);
         // create history link for this search
         localStorage.getItem("history");
@@ -35,11 +38,17 @@ $(document).ready(function() {
         }
         
         // clear any old content
-
+        $("#today").empty();
         // create html content for current weather
-
+        var todayWeather = $("<div>").addClass("row");
+        var city = weatherObj.name;
+        var date = moment().format("L");
+        var iconSRC = "http://openweathermap.org/img/wn/" + weatherObj.weather[0].icon + "@2x.png";
+        var icon = $("<img>").attr("src", iconSRC);
+        var cardHeaderEl = $("<h3>").text(city + " " + date);
+        todayWeather.append(cardHeaderEl, icon);
         // merge and add to page
-        
+        $("#today").append(todayWeather);
         // call follow-up api endpoints
         getForecast(searchValue);
         getUVIndex(data.coord.lat, data.coord.lon);
