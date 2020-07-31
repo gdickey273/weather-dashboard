@@ -23,7 +23,7 @@ $(document).ready(function() {
     
     $.ajax({
       type: "GET",
-      url: "http://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&appid=" + apiKey,
+      url: "http://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&units=imperial&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
         weatherObj = data;
@@ -40,13 +40,22 @@ $(document).ready(function() {
         // clear any old content
         $("#today").empty();
         // create html content for current weather
-        var todayWeather = $("<div>").addClass("row");
-        var city = weatherObj.name;
+        var todayWeather = $("<div>");
+        var todayWeatherHeader = $("<div>").addClass("row");
+        var city = data.name;
         var date = moment().format("L");
-        var iconSRC = "http://openweathermap.org/img/wn/" + weatherObj.weather[0].icon + "@2x.png";
+        var iconSRC = "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
         var icon = $("<img>").attr("src", iconSRC);
         var cardHeaderEl = $("<h3>").text(city + " " + date);
-        todayWeather.append(cardHeaderEl, icon);
+        todayWeatherHeader.append(cardHeaderEl, icon);
+        todayWeather.append(todayWeatherHeader);
+
+        var temperatureEl = $("<p>").html("Temperature: " + data.main.temp + " °F");
+        var humidityEl = $("<p>").html("Humidity: " + data.main.humidity + "%");
+        var windSpeedEl = $("<p>").html("Wind Speed: " + data.wind.speed + " mph");
+
+        todayWeather.append(temperatureEl, humidityEl, windSpeedEl);
+
         // merge and add to page
         $("#today").append(todayWeather);
         // call follow-up api endpoints

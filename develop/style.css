@@ -1,0 +1,10 @@
+#today{
+  background-color: #999;
+  padding-left:30px;
+}
+
+#today h3, img{
+  margin-top: auto;
+  margin-bottom: auto;
+  float: left;
+}
