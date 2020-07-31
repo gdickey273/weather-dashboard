@@ -89,16 +89,24 @@ $(document).ready(function() {
 
   function getUVIndex(lat, lon) {
     $.ajax({
-      type: "",
-      url: "" + lat + "&lon=" + lon,
+      type: "GET",
+      url: "http://api.openweathermap.org/data/2.5/uvi?appid="+ apiKey + "&lat=" + lat + "&lon=" + lon,
       dataType: "json",
       success: function(data) {
+        console.log(data);
         var uv = $("<p>").text("UV Index: ");
         var btn = $("<span>").addClass("btn btn-sm").text(data.value);
         
         // change color depending on uv value
+        if(data.value < 3){
+          btn.addClass("btn-success");
+        } else if(data.value < 8){
+          btn.addClass("btn-warning");
+        } else {
+          btn.addClass("btn-danger");
+        }
         
-        $("#today .card-body").append(uv.append(btn));
+        $("#today").append(uv.append(btn));
       }
     });
   }
