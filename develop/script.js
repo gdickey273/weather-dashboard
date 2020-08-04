@@ -1,5 +1,4 @@
 const apiKey = "77ecc596aad7e05b66bbdb9e1350922f";
-var weatherObj;
 var date = moment();
 
 $(document).ready(function() {
@@ -27,8 +26,7 @@ $(document).ready(function() {
       url: "http://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&units=imperial&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
-        weatherObj = data;
-        console.log(data);
+      
         // create history link for this search
         localStorage.getItem("history");
         if (history.indexOf(searchValue) === -1) {
@@ -40,6 +38,7 @@ $(document).ready(function() {
         
         // clear any old content
         $("#today").empty();
+
         // create html content for current weather
         var todayWeather = $("<div>");
         var todayWeatherHeader = $("<div>").addClass("row");
@@ -49,15 +48,14 @@ $(document).ready(function() {
         var cardHeaderEl = $("<h3>").text(city + " " + date.format("L"));
         todayWeatherHeader.append(cardHeaderEl, icon);
         todayWeather.append(todayWeatherHeader);
-
         var temperatureEl = $("<p>").html("Temperature: " + data.main.temp + " °F");
         var humidityEl = $("<p>").html("Humidity: " + data.main.humidity + "%");
         var windSpeedEl = $("<p>").html("Wind Speed: " + data.wind.speed + " mph");
 
-        todayWeather.append(temperatureEl, humidityEl, windSpeedEl);
-
         // merge and add to page
+        todayWeather.append(temperatureEl, humidityEl, windSpeedEl);
         $("#today").append(todayWeather);
+
         // call follow-up api endpoints
         getForecast(searchValue);
         getUVIndex(data.coord.lat, data.coord.lon);
@@ -81,7 +79,7 @@ $(document).ready(function() {
           // only look at forecasts around 3:00pm
           if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
             // create html elements for a bootstrap card
-            console.log(data.list[i]);
+           
             var dateEl = date.add(1,"days").format("L");
             var iconSRC = "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
             var icon = $("<img>").attr("src", iconSRC);
@@ -89,9 +87,11 @@ $(document).ready(function() {
             var humidity = $("<p>").html("Humidity: " + data.list[i].main.humidity + "%")
             
             var forecastCol = $("<div>").addClass("forecast-col col-lg-2 col-md-2 col-sm-2 col-xs-6");
+
+            // merge together and put on page
             forecastCol.append(dateEl, icon, temp, humidity);
             $("#forecast-row").append(forecastCol);
-            // merge together and put on page
+            
           }
         }
       }

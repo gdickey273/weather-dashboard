@@ -1,5 +1,5 @@
 #today{
-  background-color: #999;
+  background-color: lightblue;
   padding-left:30px;
 }
 
@@ -12,4 +12,5 @@
 .forecast-col {
   background-color: lightblue;
   margin-left: 18px;
+  margin-top: 10px;
 }
