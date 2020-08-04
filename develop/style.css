@@ -8,3 +8,8 @@
   margin-bottom: auto;
   float: left;
 }
+
+.forecast-col {
+  background-color: lightblue;
+  margin-left: 18px;
+}

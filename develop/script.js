@@ -1,5 +1,6 @@
 const apiKey = "77ecc596aad7e05b66bbdb9e1350922f";
 var weatherObj;
+var date = moment();
 
 $(document).ready(function() {
   $("#search-button").on("click", function() {
@@ -42,11 +43,10 @@ $(document).ready(function() {
         // create html content for current weather
         var todayWeather = $("<div>");
         var todayWeatherHeader = $("<div>").addClass("row");
-        var city = data.name;
-        var date = moment().format("L");
+        var city = data.name; 
         var iconSRC = "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
         var icon = $("<img>").attr("src", iconSRC);
-        var cardHeaderEl = $("<h3>").text(city + " " + date);
+        var cardHeaderEl = $("<h3>").text(city + " " + date.format("L"));
         todayWeatherHeader.append(cardHeaderEl, icon);
         todayWeather.append(todayWeatherHeader);
 
@@ -67,19 +67,30 @@ $(document).ready(function() {
   
   function getForecast(searchValue) {
     $.ajax({
-      type: "",
-      url: "" + searchValue + "",
+      type: "GET",
+      url: "http://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&units=imperial&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
         // overwrite any existing content with title and empty row
+        var header = $("<h3>").html("5-Day Forecast");
+        var emptyRow = $("<div>").addClass("row").attr("id", "forecast-row");
+        $("#forecast").append(header, emptyRow);
 
         // loop over all forecasts (by 3-hour increments)
         for (var i = 0; i < data.list.length; i++) {
           // only look at forecasts around 3:00pm
           if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
             // create html elements for a bootstrap card
+            console.log(data.list[i]);
+            var dateEl = date.add(1,"days").format("L");
+            var iconSRC = "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
+            var icon = $("<img>").attr("src", iconSRC);
+            var temp = $("<p>").html("Temperature: " + data.list[i].main.temp + " °F");
+            var humidity = $("<p>").html("Humidity: " + data.list[i].main.humidity + "%")
             
-
+            var forecastCol = $("<div>").addClass("forecast-col col-lg-2 col-md-2 col-sm-2 col-xs-6");
+            forecastCol.append(dateEl, icon, temp, humidity);
+            $("#forecast-row").append(forecastCol);
             // merge together and put on page
           }
         }
@@ -93,7 +104,6 @@ $(document).ready(function() {
       url: "http://api.openweathermap.org/data/2.5/uvi?appid="+ apiKey + "&lat=" + lat + "&lon=" + lon,
       dataType: "json",
       success: function(data) {
-        console.log(data);
         var uv = $("<p>").text("UV Index: ");
         var btn = $("<span>").addClass("btn btn-sm").text(data.value);
         
