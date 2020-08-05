@@ -23,7 +23,7 @@ $(document).ready(function() {
     
     $.ajax({
       type: "GET",
-      url: "http://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&units=imperial&appid=" + apiKey,
+      url: "https://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&units=imperial&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
       
@@ -43,7 +43,7 @@ $(document).ready(function() {
         var todayWeather = $("<div>");
         var todayWeatherHeader = $("<div>").addClass("row");
         var city = data.name; 
-        var iconSRC = "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
+        var iconSRC = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
         var icon = $("<img>").attr("src", iconSRC);
         var cardHeaderEl = $("<h3>").text(city + " " + date.format("L"));
         todayWeatherHeader.append(cardHeaderEl, icon);
@@ -66,7 +66,7 @@ $(document).ready(function() {
   function getForecast(searchValue) {
     $.ajax({
       type: "GET",
-      url: "http://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&units=imperial&appid=" + apiKey,
+      url: "https://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&units=imperial&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
         $("#forecast").empty();
@@ -82,7 +82,7 @@ $(document).ready(function() {
             // create html elements for a bootstrap card
            
             var dateEl = date.add(1,"days").format("L");
-            var iconSRC = "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
+            var iconSRC = "https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
             var icon = $("<img>").attr("src", iconSRC);
             var temp = $("<p>").html("Temperature: " + data.list[i].main.temp + " °F");
             var humidity = $("<p>").html("Humidity: " + data.list[i].main.humidity + "%")
