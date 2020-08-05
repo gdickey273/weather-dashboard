@@ -69,6 +69,7 @@ $(document).ready(function() {
       url: "http://api.openweathermap.org/data/2.5/forecast?q=" + searchValue + "&units=imperial&appid=" + apiKey,
       dataType: "json",
       success: function(data) {
+        $("#forecast").empty();
         // overwrite any existing content with title and empty row
         var header = $("<h3>").html("5-Day Forecast");
         var emptyRow = $("<div>").addClass("row").attr("id", "forecast-row");
